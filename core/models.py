@@ -8,7 +8,7 @@ class Tag(models.Model):
 
 
 class User(models.Model):
-    uiid = models.CharField(max_length=1000, blank=True, null=True, unique=True)
+    uuid = models.CharField(max_length=1000, blank=True, null=True, unique=True)
     nickname = models.CharField(max_length=200, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     lat = models.FloatField(blank=True, null=True)

@@ -12,21 +12,21 @@ class CreateOrUpdateUserView(views.APIView):
 
     def post(self, request):
         try:
-            user, created = User.objects.get_or_create(uiid=request.data['uiid'])
-            if request.data['nickname']:
+            user, created = User.objects.get_or_create(uuid=request.data['uuid'])
+            if 'nickname' in request.data:
                 user.nickname = request.data['nickname']
-            if request.data['bio']:
+            if 'bio' in request.data:
                 user.bio = request.data['bio']
-            if request.data['picture']:
+            if 'picture' in request.data:
                 user.picture = request.data['picture']
-            if request.data['lat']:
+            if 'lat' in request.data:
                 user.lat = request.data['lat']
-            if request.data['long']:
+            if 'long' in request.data:
                 user.long = request.data['long']
-            if request.data['tags']:
+            if 'tags' in request.data:
                 user.tags.clear()
-                for tag in request.data['tags']:
-                    user.tags.add(Tag.objects.get(id=tag))
+                for tag in request.data['tags'].split(','):
+                    user.tags.add(Tag.objects.get(id=int(tag)))
             user.save()
             return Response(status=status.HTTP_200_OK)
         except:
@@ -41,13 +41,13 @@ class GetAllUsersView(views.APIView):
         data = []
         for user in users:
             data.append({
-                'uiid': user.uiid,
+                'uuid': user.uuid,
                 'nickname': user.nickname,
                 'bio': user.bio,
                 'lat': user.lat,
                 'long': user.long,
                 'picture': user.picture.url if user.picture else None,
-                'tags': [tag.name for tag in user.tags.all()]
+                'tags': [{'id': tag.id, 'name': tag.name} for tag in user.tags.all()]
             })
         return Response(data=data, status=status.HTTP_200_OK)
 
@@ -57,7 +57,7 @@ class UpdateLocationView(views.APIView):
 
     def post(self, request):
         try:
-            user = User.objects.get(uiid=request.data['uiid'])
+            user = User.objects.get(uuid=request.data['uuid'])
             user.lat = request.data['lat']
             user.long = request.data['long']
             user.save()
