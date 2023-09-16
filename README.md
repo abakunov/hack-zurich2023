@@ -1,1 +1,1 @@
-# hack-zurich2023
+# zurich-hack-2023
