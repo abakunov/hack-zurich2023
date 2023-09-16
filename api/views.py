@@ -11,7 +11,7 @@ class CreateOrUpdateUserView(views.APIView):
     permission_classes = (AllowAny,)
 
     def post(self, request):
-        # try:
+        try:
             user, created = User.objects.get_or_create(uiid=request.data['uiid'])
             if request.data['nickname']:
                 user.nickname = request.data['nickname']
@@ -29,8 +29,8 @@ class CreateOrUpdateUserView(views.APIView):
                     user.tags.add(Tag.objects.get(id=tag))
             user.save()
             return Response(status=status.HTTP_200_OK)
-        # except:
-        #     return Response(status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     
 
 class GetAllUsersView(views.APIView):
