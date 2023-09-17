@@ -7,4 +7,5 @@ api_urls = [
     path('update-user/', CreateOrUpdateUserView.as_view()),
     path('update-location/', UpdateLocationView.as_view()),
     path('all-tags/', GetTagsView.as_view()),
+    path('get-avatars/', GetAvatarsView.as_view()),
 ]

@@ -18,3 +18,7 @@ class User(models.Model):
 
     def __str__(self):
         return str(self.nickname)
+
+
+class Avatar(models.Model):
+    avatar = models.ImageField(upload_to='avatars', blank=True, null=True)

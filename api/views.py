@@ -19,6 +19,9 @@ class CreateOrUpdateUserView(views.APIView):
                 user.bio = request.data['bio']
             if 'picture' in request.data:
                 user.picture = request.data['picture']
+            if 'avatar' in request.data:
+                av = Avatar.objects.get(id=int(request.data['avatar']))
+                user.picture = av.avatar
             if 'lat' in request.data:
                 user.lat = request.data['lat']
             if 'long' in request.data:
@@ -76,5 +79,19 @@ class GetTagsView(views.APIView):
             data.append({
                 'id': tag.id,
                 'name': tag.name,
+            })
+        return Response(data=data, status=status.HTTP_200_OK)
+
+
+class GetAvatarsView(views.APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request):
+        avatars = Avatar.objects.all()
+        data = []
+        for avatar in avatars:
+            data.append({
+                'id': avatar.id,
+                'avatar': avatar.avatar.url
             })
         return Response(data=data, status=status.HTTP_200_OK)
